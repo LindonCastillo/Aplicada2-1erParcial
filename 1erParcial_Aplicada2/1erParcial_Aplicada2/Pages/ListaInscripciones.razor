@@ -1,0 +1,50 @@
+﻿@page "/ListaInscripciones"
+
+@using _1erParcial_Aplicada2.Controllers;
+@using _1erParcial_Aplicada2.Models;
+
+<h3>Lista de Inscripciones</h3>
+@if(lista == null)
+{
+    <a>No hay elementos agregados....</a>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Semestre</th>
+                <th>Cred. Limites</th>
+                <th>Cred. Tomados</th>
+                <th>Cred. Disponibles</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in lista)
+             {
+                <tr>
+                    <td>@item.InscripcionId</td>
+                    <td>@item.Semestre</td>
+                    <td>@item.Limite</td>
+                    <td>@item.Tomados</td>
+                    <td>@item.Disponibles</td>
+                </tr>
+             }
+            </tbody>
+    </table>
+}
+
+
+@code {
+    InscripcionesController controller = new InscripcionesController();
+    List<Inscripciones> lista = new List<Inscripciones>();
+
+    protected override void OnInitialized()
+    {
+        lista = controller.GetList(A => true);
+    }
+
+
+
+}

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace _1erParcial_Aplicada2.Controllers
@@ -18,11 +19,11 @@ namespace _1erParcial_Aplicada2.Controllers
 			{
 				if(db.Inscripciones.Any(A => A.InscripcionId == inscripciones.InscripcionId))
 				{
-
+					paso = Modificar(inscripciones);
 				}
 				else
 				{
-
+					paso = Insertar(inscripciones);
 				}
 
 			}
@@ -121,7 +122,7 @@ namespace _1erParcial_Aplicada2.Controllers
 			Inscripciones inscripciones;
 			try
 			{
-				
+				inscripciones = db.Inscripciones.Find(id);
 			}
 			catch (Exception)
 			{
@@ -132,6 +133,30 @@ namespace _1erParcial_Aplicada2.Controllers
 			{
 				db.Dispose();
 			}
+
+			return inscripciones;
+		}
+
+
+		public List<Inscripciones> GetList(Expression<Func<Inscripciones,bool>> expression)
+		{
+			Contexto db = new Contexto();
+			List<Inscripciones> lista = new List<Inscripciones>();
+			try
+			{
+				lista = db.Inscripciones.Where(expression).ToList();
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+			finally
+			{
+				db.Dispose();
+			}
+
+			return lista;
 		}
     }
 }

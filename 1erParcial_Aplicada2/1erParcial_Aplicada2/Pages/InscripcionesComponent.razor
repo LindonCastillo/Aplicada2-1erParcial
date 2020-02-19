@@ -1,0 +1,155 @@
+﻿@page "/InscripcionesComponent"
+
+@using _1erParcial_Aplicada2.Controllers;
+@using _1erParcial_Aplicada2.Models;
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+
+    .form-register {
+        width: 500px;
+        background: #24303c;
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3{
+        color :white;
+    }
+
+</style>
+
+<div>
+    <section class="form-register">
+        <EditForm Model="@inscripciones" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <h3>Inscripciones Component</h3>
+
+            <h5 class="text-muted form-text">@Mensaje</h5>
+            <div class="form-group">
+                <label for="inscripcionid_number">InscripciónId</label>
+                <InputNumber id="inscripcionid_number" class="form-control" @bind-Value="inscripciones.InscripcionId"></InputNumber>
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+            </div>
+            <div class="form-group">
+                <label for="semestre_text">Semestre</label>
+                <InputText id="semestre_text" class="form-control" @bind-Value="inscripciones.Semestre"></InputText>
+            </div>
+            <div class="form-group">
+                <label for="limite_number"> Limite</label>
+                <InputNumber id="limite_number" class="form-control" @bind-Value="inscripciones.Limite"></InputNumber>
+            </div>
+            <div class="form-group">
+                <label for="tomados_number">Tomados</label>
+                <InputNumber id="tomados_number" class="form-control" @bind-Value="inscripciones.Tomados"></InputNumber>
+            </div>
+            <div class="form-group">
+                <label for="disponibles_number">Disponibles</label>
+                <InputNumber id="disponibles_number" class="form-control" @bind-Value="inscripciones.Disponibles" ReadOnly="true"></InputNumber>
+            </div>
+
+            <ValidationSummary />
+            <div>
+                <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
+                <button type="submit" class="btn btn-success" @onclick="CalculoCreditos">Guardar</button>
+                <button type="button" class="btn btn-secondary" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </EditForm>
+    </section>
+</div>
+
+
+@code {
+    [Parameter]
+    public string Mensaje { get; set; }
+
+
+    Inscripciones inscripciones = new Inscripciones();
+
+    private void Limpiar()
+    {
+        Mensaje = string.Empty;
+        inscripciones = new Inscripciones();
+    }
+
+    private void CalculoCreditos()
+    {
+        inscripciones.Disponibles = inscripciones.Limite - inscripciones.Tomados;
+    }
+
+    private void Guardar()
+    {
+        InscripcionesController controller = new InscripcionesController();
+
+        if(inscripciones.InscripcionId > 0)
+        {
+            if (controller.Guardar(inscripciones))
+            {
+                Mensaje = "Se modifico correctamente";
+                inscripciones = new Inscripciones();
+            }
+            else
+            {
+                Mensaje = "No se pudo modificar";
+            }
+        }
+        else
+        {
+            if (controller.Guardar(inscripciones))
+            {
+                Mensaje = "Se guardo correctamente";
+                inscripciones = new Inscripciones();
+            }
+            else
+            {
+                Mensaje = "No se pudo guardar";
+            }
+        }
+    }
+
+    private void Buscar()
+    {
+        InscripcionesController controller = new InscripcionesController();
+        Inscripciones ins = controller.Buscar(inscripciones.InscripcionId);
+
+        if(ins != null)
+        {
+            inscripciones = ins;
+            Mensaje = "Se encontro la inscripción";
+        }
+        else
+        {
+            Mensaje = "Esta inscripción no existe";
+        }
+    }
+
+    private void Eliminar()
+    {
+        InscripcionesController controller = new InscripcionesController();
+
+        bool paso = controller.Eliminar(inscripciones.InscripcionId);
+
+        if(paso == true)
+        {
+            Mensaje = "La inscripción se elimino";
+            inscripciones = new Inscripciones();
+        }
+        else
+        {
+            Mensaje = "Esta inscripción no existe";
+        }
+    }
+
+
+
+}
