@@ -15,7 +15,7 @@ namespace _1erParcial_Aplicada2.Models
         [Required(ErrorMessage = "El campo Semestre no puede estar vacío")]
         public string Semestre { get; set; }
         [Required]
-        [Range(minimum: 1, maximum: 1000000000000, ErrorMessage = "El campo EstudianteId tiene que estar registrado ")]
+        [Range(minimum: 1, maximum: 1000000000, ErrorMessage = "El campo EstudianteId tiene que estar registrado ")]
         public int EstudianteId { get; set; }
         [Required]
         [Range(minimum:1,maximum:10000,ErrorMessage ="Tiene que poner un valor valido en campo Limite")]
