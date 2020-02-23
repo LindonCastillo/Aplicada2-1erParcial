@@ -1,0 +1,48 @@
+﻿@page "/ListaPagos"
+
+@using _1erParcial_Aplicada2.Controllers;
+@using _1erParcial_Aplicada2.Models;
+
+<h3>Lista de Pagos</h3>
+@if (lista == null)
+{
+    <a>No hay elementos agregados....</a>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>PagoId</th>
+                <th>Fecha</th>
+                <th>InscripcionId</th>
+                <th>Monto</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in lista)
+            {
+                <tr>
+                    <td>@item.PagoId</td>
+                    <td>@item.Fecha</td>
+                    <td>@item.InscripcionId</td>
+                    <td>@item.Monto</td>
+                    <td><a class="btn btn-outline-info" href="EstudiantesComponent/@item.PagoId">Ver</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    PagosController controller = new PagosController();
+    List<Pagos> lista = new List<Pagos>();
+
+    protected override void OnInitialized()
+    {
+        lista = controller.GetList(A => true);
+    }
+
+
+}

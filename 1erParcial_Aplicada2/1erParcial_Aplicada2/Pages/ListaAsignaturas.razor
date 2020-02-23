@@ -1,0 +1,50 @@
+﻿@page "/ListaAsignaturas"
+
+@using _1erParcial_Aplicada2.Controllers;
+@using _1erParcial_Aplicada2.Models;
+
+<h3>Lista de Asignaturas</h3>
+@if (lista == null)
+{
+    <a>No hay elementos agregados....</a>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>AsignaturaId</th>
+                <th>Codigo</th>
+                <th>Descripcion</th>
+                <th>PreRequisito</th>
+                <th>Creditos</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in lista)
+            {
+            <tr>
+                <td>@item.AsignaturaId</td>
+                <td>@item.Codigo</td>
+                <td>@item.Descripcion</td>
+                <td>@item.PreRequisito</td>
+                <td>@item.Creditos</td>
+                <td><a class="btn btn-outline-info" href="ListaAsignaturas/@item.AsignaturaId">Ver</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    AsignaturasController controller = new AsignaturasController();
+    List<Asignaturas> lista = new List<Asignaturas>();
+
+    protected override void OnInitialized()
+    {
+        lista = controller.GetList(A => true);
+    }
+
+
+}

@@ -1,4 +1,4 @@
-﻿@page "/InscripcionesComponent"
+﻿@page "/InscripcionesComponent/{Id:int}"
 
 @using _1erParcial_Aplicada2.Controllers;
 @using _1erParcial_Aplicada2.Models;
@@ -97,8 +97,19 @@
 
 @code {
     [Parameter]
+    public int Id { get; set; }
     public string Mensaje { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        InscripcionesController controller = new InscripcionesController();
+        Limpiar();
+        Mensaje = string.Empty;
+        if(Id != 0)
+        {
+            inscripciones = controller.Buscar(Id);
+        }
+    }
 
     Inscripciones inscripciones = new Inscripciones();
 

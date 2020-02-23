@@ -1,4 +1,4 @@
-﻿@page "/AsignaturasComponent"
+﻿@page "/AsignaturasComponent/{Id:int}"
 
 @using _1erParcial_Aplicada2.Controllers;
 @using _1erParcial_Aplicada2.Models;
@@ -77,7 +77,20 @@
 
 @code {
     [Parameter]
+    public int Id { get; set; }
     public string Mensaje { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        AsignaturasController controller = new AsignaturasController();
+        Limpiar();
+        Mensaje = string.Empty;
+        if(Id != 0)
+        {
+            asignaturas = controller.Buscar(Id);
+        }
+    }
 
 
     Asignaturas asignaturas = new Asignaturas();

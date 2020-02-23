@@ -1,4 +1,4 @@
-﻿@page "/PagosComponent"
+﻿@page "/PagosComponent/{Id:int}"
 
 @using _1erParcial_Aplicada2.Controllers;
 @using _1erParcial_Aplicada2.Models;
@@ -72,9 +72,20 @@
 
 @code {
     [Parameter]
+    public int Id { get; set; }
     public string Mensaje { get; set; }
 
 
+    protected override async Task OnInitializedAsync()
+    {
+        PagosController controller = new PagosController();
+        Limpiar();
+        Mensaje = string.Empty;
+        if(Id != 0)
+        {
+            pagos = controller.Buscar(Id);
+        }
+    }
     Pagos pagos = new Pagos();
 
     private void Limpiar()

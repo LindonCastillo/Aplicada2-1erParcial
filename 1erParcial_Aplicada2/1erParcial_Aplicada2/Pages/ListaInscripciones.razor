@@ -13,23 +13,29 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>InscripciónId</th>
                 <th>Semestre</th>
                 <th>Cred. Limites</th>
                 <th>Cred. Tomados</th>
                 <th>Cred. Disponibles</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in lista)
              {
-                <tr>
-                    <td>@item.InscripcionId</td>
-                    <td>@item.Semestre</td>
-                    <td>@item.Limite</td>
-                    <td>@item.Tomados</td>
-                    <td>@item.Disponibles</td>
-                </tr>
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Fecha</td>
+                <td>@item.Semestre</td>
+                <td>@item.EstudianteId</td>
+                <td>@item.Limite</td>
+                <td>@item.Tomados</td>
+                <td>@item.Disponibles</td>
+                <td>@item.Monto</td>
+                <td>@item.Balance</td>
+                <td><a class="btn btn-outline-info" href="InscripcionesComponent/@item.InscripcionId">Ver</a></td>
+            </tr>
              }
             </tbody>
     </table>

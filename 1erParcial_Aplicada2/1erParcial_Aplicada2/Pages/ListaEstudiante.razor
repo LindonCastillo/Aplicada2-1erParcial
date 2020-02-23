@@ -1,0 +1,48 @@
+﻿@page "/ListaEstudiante"
+
+@using _1erParcial_Aplicada2.Controllers;
+@using _1erParcial_Aplicada2.Models;
+
+<h3>Lista de Estudiante</h3>
+@if (lista == null)
+{
+    <a>No hay elementos agregados....</a>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>EstudianteId</th>
+                <th>Matricula</th>
+                <th>Nombres</th>
+                <th>Balance</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in lista)
+            {
+                <tr>
+                    <td>@item.EstudianteId</td>
+                    <td>@item.Matricula</td>
+                    <td>@item.Nombres</td>
+                    <td>@item.Balance</td>
+                    <td><a class="btn btn-outline-info" href="EstudiantesComponent/@item.EstudianteId">Ver</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    EstudianteController controller = new EstudianteController();
+    List<Estudiantes> lista = new List<Estudiantes>();
+
+    protected override void OnInitialized()
+    {
+        lista = controller.GetList(A => true);
+    }
+
+
+}
