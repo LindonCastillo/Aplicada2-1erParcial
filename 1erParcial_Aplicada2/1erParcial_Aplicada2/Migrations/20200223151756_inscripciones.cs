@@ -7,38 +7,6 @@ namespace _1erParcial_Aplicada2.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Semestre",
-                table: "Inscripciones",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "TEXT",
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<decimal>(
-                name: "Balance",
-                table: "Inscripciones",
-                nullable: false,
-                defaultValue: 0m);
-
-            migrationBuilder.AddColumn<int>(
-                name: "EstudianteId",
-                table: "Inscripciones",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "Fecha",
-                table: "Inscripciones",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<decimal>(
-                name: "Monto",
-                table: "Inscripciones",
-                nullable: false,
-                defaultValue: 0m);
-
             migrationBuilder.CreateTable(
                 name: "Asignaturas",
                 columns: table => new
@@ -71,6 +39,26 @@ namespace _1erParcial_Aplicada2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Inscripciones",
+                columns: table => new
+                {
+                    InscripcionId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Fecha = table.Column<DateTime>(nullable: false),
+                    Semestre = table.Column<string>(nullable: false),
+                    EstudianteId = table.Column<int>(nullable: false),
+                    Limite = table.Column<int>(nullable: false),
+                    Tomados = table.Column<int>(nullable: false),
+                    Disponibles = table.Column<int>(nullable: false),
+                    Monto = table.Column<decimal>(nullable: false),
+                    Balance = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inscripciones", x => x.InscripcionId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Pagos",
                 columns: table => new
                 {
@@ -95,30 +83,10 @@ namespace _1erParcial_Aplicada2.Migrations
                 name: "Estudiantes");
 
             migrationBuilder.DropTable(
+                name: "Inscripciones");
+
+            migrationBuilder.DropTable(
                 name: "Pagos");
-
-            migrationBuilder.DropColumn(
-                name: "Balance",
-                table: "Inscripciones");
-
-            migrationBuilder.DropColumn(
-                name: "EstudianteId",
-                table: "Inscripciones");
-
-            migrationBuilder.DropColumn(
-                name: "Fecha",
-                table: "Inscripciones");
-
-            migrationBuilder.DropColumn(
-                name: "Monto",
-                table: "Inscripciones");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Semestre",
-                table: "Inscripciones",
-                type: "TEXT",
-                nullable: true,
-                oldClrType: typeof(string));
         }
     }
 }

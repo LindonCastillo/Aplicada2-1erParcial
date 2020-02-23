@@ -13,11 +13,15 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>InscripciónId</th>
+                <th>Id</th>
+                <th>Fecha</th>
                 <th>Semestre</th>
+                <th>EstudianteId</th>
                 <th>Cred. Limites</th>
                 <th>Cred. Tomados</th>
                 <th>Cred. Disponibles</th>
+                <th>Monto</th>
+                <th>Balance</th>
                 <th></th>
             </tr>
         </thead>
@@ -25,7 +29,7 @@ else
             @foreach (var item in lista)
              {
             <tr>
-                <td>@item.Id</td>
+                <td>@item.InscripcionId</td>
                 <td>@item.Fecha</td>
                 <td>@item.Semestre</td>
                 <td>@item.EstudianteId</td>

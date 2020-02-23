@@ -9,7 +9,7 @@ using _1erParcial_Aplicada2.Data;
 namespace _1erParcial_Aplicada2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200223141602_inscripciones")]
+    [Migration("20200223151756_inscripciones")]
     partial class inscripciones
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

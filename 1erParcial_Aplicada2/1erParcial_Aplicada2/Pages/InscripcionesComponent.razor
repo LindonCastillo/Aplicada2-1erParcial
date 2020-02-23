@@ -59,12 +59,12 @@
             </div>
             <div class="form-group">
                 <label for="limite_number"> Limite</label>
-                <InputNumber id="limite_number" class="form-control" @bind-Value="inscripciones.Limite"></InputNumber>
+                <InputNumber id="limite_number" class="form-control" @onfocusin="CalculoCreditos" @onfocusout="CalculoCreditos" @bind-Value="inscripciones.Limite"></InputNumber>
                 <ValidationMessage For="(() => inscripciones.Limite)" />
             </div>
             <div class="form-group">
                 <label for="tomados_number">Tomados</label>
-                <InputNumber id="tomados_number" class="form-control" @bind-Value="inscripciones.Tomados"></InputNumber>
+                <InputNumber id="tomados_number" class="form-control" @onfocusin="CalculoCreditos" @onfocusout="CalculoCreditos" @bind-Value="inscripciones.Tomados"></InputNumber>
                 <ValidationMessage For="(() => inscripciones.Tomados)" />
             </div>
             <div class="form-group">
@@ -85,7 +85,7 @@
 
             <div>
                 <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
-                <button type="submit" class="btn btn-success" @onclick="CalculoCreditos">Guardar</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
                 <button type="button" class="btn btn-secondary" @onclick="Eliminar">Eliminar</button>
             </div>
         </EditForm>

@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200223035654_inscripciones.cs" />
-    <Compile Remove="Migrations\20200223035654_inscripciones.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Database\" />
   </ItemGroup>
 
