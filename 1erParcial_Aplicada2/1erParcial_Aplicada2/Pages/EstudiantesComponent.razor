@@ -1,0 +1,148 @@
+﻿@page "/EstudiantesComponent"
+
+@using _1erParcial_Aplicada2.Controllers;
+@using _1erParcial_Aplicada2.Models;
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+
+    .form-register {
+        width: 500px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+</style>
+
+<div>
+    <section class="form-register">
+        <EditForm Model="@estudiantes" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <h3>Estudiantes Component</h3>
+
+            <h5 class="text-muted form-text">@Mensaje</h5>
+            <div class="form-group">
+                <label for="estudianteid_number">EstudianteId</label>
+                <InputNumber id="estudianteid_number" class="form-control" @bind-Value="estudiantes.EstudianteId"></InputNumber>
+                <ValidationMessage For="(() => estudiantes.EstudianteId)" />
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+            </div>
+            <div class="form-group">
+                <label for="matricula_text">Matricula</label>
+                <InputText id="matricula_text" class="form-control" @bind-Value="estudiantes.Matricula"></InputText>
+                <ValidationMessage For="(() => estudiantes.Matricula)" />
+            </div>
+            <div class="form-group">
+                <label for="nombre_text">Nombres</label>
+                <InputText id="nombre_text" class="form-control" @bind-Value="estudiantes.Nombres"></InputText>
+                <ValidationMessage For="(() => estudiantes.Nombres)" />
+            </div>
+            <div class="form-group">
+                <label for="balance_number">Balance</label>
+                <InputNumber id="balance_number" class="form-control" @bind-Value="estudiantes.Balance"></InputNumber>
+                <ValidationMessage For="(() => estudiantes.Balance)" />
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-secondary" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </EditForm>
+    </section>
+    <br />
+    <br />
+</div>
+
+@code {
+    [Parameter]
+    public string Mensaje { get; set; }
+
+
+    Estudiantes estudiantes = new Estudiantes();
+
+    private void Limpiar()
+    {
+        Mensaje = string.Empty;
+        estudiantes = new Estudiantes();
+    }
+
+
+    private void Guardar()
+    {
+        EstudianteController controller = new EstudianteController();
+
+        if(estudiantes.EstudianteId > 0)
+        {
+            if (controller.Guardar(estudiantes))
+            {
+                Mensaje = "Se modifico correctamente";
+                estudiantes = new Estudiantes();
+            }
+            else
+            {
+                Mensaje = "No se pudo modificar";
+            }
+        }
+        else
+        {
+            if (controller.Guardar(estudiantes))
+            {
+                Mensaje = "Se guardo correctamente";
+                estudiantes = new Estudiantes();
+            }
+            else
+            {
+                Mensaje = "No se pudo guardar";
+            }
+        }
+    }
+
+    private void Buscar()
+    {
+        EstudianteController controller = new EstudianteController();
+        Estudiantes temp = controller.Buscar(estudiantes.EstudianteId);
+
+        if(temp != null)
+        {
+            estudiantes = temp;
+            Mensaje = "Se encontro el Estudiante";
+        }
+        else
+        {
+            Mensaje = "Esta Estudiantes no existe";
+        }
+    }
+
+    private void Eliminar()
+    {
+        EstudianteController controller = new EstudianteController();
+
+        bool paso = controller.Eliminar(estudiantes.EstudianteId);
+
+        if(paso == true)
+        {
+            Mensaje = "EL estudiantes se elimino";
+            estudiantes = new Estudiantes();
+        }
+        else
+        {
+            Mensaje = "No se puede eliminar un estudiante que no existe";
+        }
+    }
+}

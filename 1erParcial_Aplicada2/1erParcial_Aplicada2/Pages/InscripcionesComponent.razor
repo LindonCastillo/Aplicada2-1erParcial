@@ -13,7 +13,7 @@
 
     .form-register {
         width: 500px;
-        background: #24303c;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
         padding: 30px;
         margin: auto;
         margin-top: 100px;
@@ -39,26 +39,50 @@
             <div class="form-group">
                 <label for="inscripcionid_number">InscripciónId</label>
                 <InputNumber id="inscripcionid_number" class="form-control" @bind-Value="inscripciones.InscripcionId"></InputNumber>
+                <ValidationMessage For="(() => inscripciones.InscripcionId)" />
                 <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+            </div>
+            <div class="form-group">
+                <label for="fecha_date">Fecha</label>
+                <InputDate id="fecha_date" class="form-control" @bind-Value="inscripciones.Fecha"></InputDate>
+                <ValidationMessage For="(() => inscripciones.Fecha)" />
             </div>
             <div class="form-group">
                 <label for="semestre_text">Semestre</label>
                 <InputText id="semestre_text" class="form-control" @bind-Value="inscripciones.Semestre"></InputText>
+                <ValidationMessage For="(() => inscripciones.Semestre)" />
+            </div>
+            <div class="form-group">
+                <label for="estudianteid_number">EstudianteId</label>
+                <InputNumber id="estudianteid_number" class="form-control" @bind-Value="inscripciones.EstudianteId"></InputNumber>
+                <ValidationMessage For="(() => inscripciones.EstudianteId)" />
             </div>
             <div class="form-group">
                 <label for="limite_number"> Limite</label>
                 <InputNumber id="limite_number" class="form-control" @bind-Value="inscripciones.Limite"></InputNumber>
+                <ValidationMessage For="(() => inscripciones.Limite)" />
             </div>
             <div class="form-group">
                 <label for="tomados_number">Tomados</label>
                 <InputNumber id="tomados_number" class="form-control" @bind-Value="inscripciones.Tomados"></InputNumber>
+                <ValidationMessage For="(() => inscripciones.Tomados)" />
             </div>
             <div class="form-group">
                 <label for="disponibles_number">Disponibles</label>
                 <InputNumber id="disponibles_number" class="form-control" @bind-Value="inscripciones.Disponibles" ReadOnly="true"></InputNumber>
+                <ValidationMessage For="(() => inscripciones.Disponibles)" />
+            </div>
+            <div class="form-group">
+                <label for="monto_number">Monto</label>
+                <InputNumber id="monto_number" class="form-control" @bind-Value="inscripciones.Monto"></InputNumber>
+                <ValidationMessage For="(() => inscripciones.Monto)" />
+            </div>
+            <div class="form-group">
+                <label for="balance_number">Balance</label>
+                <InputNumber id="balance_number" class="form-control" @bind-Value="inscripciones.Balance" ReadOnly="true"></InputNumber>
+                <ValidationMessage For="(() => inscripciones.Balance)" />
             </div>
 
-            <ValidationSummary />
             <div>
                 <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
                 <button type="submit" class="btn btn-success" @onclick="CalculoCreditos">Guardar</button>
@@ -66,6 +90,8 @@
             </div>
         </EditForm>
     </section>
+    <br />
+    <br />
 </div>
 
 

@@ -1,0 +1,149 @@
+﻿@page "/PagosComponent"
+
+@using _1erParcial_Aplicada2.Controllers;
+@using _1erParcial_Aplicada2.Models;
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+
+    .form-register {
+        width: 500px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+</style>
+
+<h3>PagosComponent</h3>
+<div>
+    <section class="form-register">
+        <EditForm Model="@pagos" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <h3>Pagos Component</h3>
+
+            <h5 class="text-muted form-text">@Mensaje</h5>
+            <div class="form-group">
+                <label for="pagoid_number">PagoId</label>
+                <InputNumber id="pagoid_number" class="form-control" @bind-Value="pagos.PagoId"></InputNumber>
+                <ValidationMessage For="(() => pagos.PagoId)" />
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+            </div>
+            <div class="form-group">
+                <label for="fecha_date">Fecha</label>
+                <InputDate id="fecha_date" class="form-control" @bind-Value="pagos.Fecha"></InputDate>
+                <ValidationMessage For="(() => pagos.Fecha)" />
+            </div>
+            <div class="form-group">
+                <label for="inscripcionid_text">InscripcionId</label>
+                <InputNumber id="inscripcionid_text" class="form-control" @bind-Value="pagos.InscripcionId"></InputNumber>
+                <ValidationMessage For="(() => pagos.InscripcionId)" />
+            </div>
+            <div class="form-group">
+                <label for="monto_number">Monto</label>
+                <InputNumber id="monto_number" class="form-control" @bind-Value="pagos.Monto"></InputNumber>
+                <ValidationMessage For="(() => pagos.Monto)" />
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-secondary" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </EditForm>
+    </section>
+    <br />
+    <br />
+</div>
+
+@code {
+    [Parameter]
+    public string Mensaje { get; set; }
+
+
+    Pagos pagos = new Pagos();
+
+    private void Limpiar()
+    {
+        Mensaje = string.Empty;
+        pagos = new Pagos();
+    }
+
+
+    private void Guardar()
+    {
+        PagosController controller = new PagosController();
+
+        if (pagos.PagoId > 0)
+        {
+            if (controller.Guardar(pagos))
+            {
+                Mensaje = "Se modifico correctamente";
+                pagos = new Pagos();
+            }
+            else
+            {
+                Mensaje = "No se pudo modificar";
+            }
+        }
+        else
+        {
+            if (controller.Guardar(pagos))
+            {
+                Mensaje = "Se guardo correctamente";
+                pagos = new Pagos();
+            }
+            else
+            {
+                Mensaje = "No se pudo guardar";
+            }
+        }
+    }
+
+    private void Buscar()
+    {
+        PagosController controller = new PagosController();
+        Pagos temp = controller.Buscar(pagos.PagoId);
+
+        if (temp != null)
+        {
+            pagos = temp;
+            Mensaje = "Se encontro el Pago";
+        }
+        else
+        {
+            Mensaje = "Esta Pagos no existe";
+        }
+    }
+
+    private void Eliminar()
+    {
+        PagosController controller = new PagosController();
+
+        bool paso = controller.Eliminar(pagos.PagoId);
+
+        if (paso == true)
+        {
+            Mensaje = "EL pago se elimino";
+            pagos = new Pagos();
+        }
+        else
+        {
+            Mensaje = "No se puede eliminar un pago que no existe";
+        }
+    }
+}
