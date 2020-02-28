@@ -91,8 +91,13 @@ namespace _1erParcial_Aplicada2.Controllers
 			{
 				Inscripciones tempIncripcion = inscripciones.Buscar(pagos.InscripcionId);
 				Estudiantes tempEstudiante = estudiante.Buscar(tempIncripcion.EstudianteId);
-				tempIncripcion.Balance = pagos.Monto;
-				tempEstudiante.Balance = pagos.Monto;
+				Pagos tempPago = Buscar(pagos.PagoId);
+
+				decimal nuevoBalance1 = tempIncripcion.Balance += tempPago.Monto;
+				decimal nuevoBalance2 = tempEstudiante.Balance += tempPago.Monto;
+
+				tempIncripcion.Balance = nuevoBalance1 - pagos.Monto;
+				tempEstudiante.Balance = nuevoBalance2 - pagos.Monto;
 				if (tempIncripcion.Balance < 0)
 				{
 					tempIncripcion.Balance = 0;

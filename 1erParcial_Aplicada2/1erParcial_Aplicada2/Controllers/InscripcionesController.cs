@@ -75,7 +75,10 @@ namespace _1erParcial_Aplicada2.Controllers
 			try
 			{
 				Estudiantes tempEstudiante = controller.Buscar(inscripciones.EstudianteId);
-				tempEstudiante.Balance = inscripciones.Balance;
+				Inscripciones inscripcion = Buscar(inscripciones.InscripcionId);
+
+				decimal nuevoBalance = tempEstudiante.Balance -= inscripcion.Balance;
+				tempEstudiante.Balance = nuevoBalance + inscripciones.Balance;
 				controller.Modificar(tempEstudiante);
 
 				db.Entry(inscripciones).State = EntityState.Modified;

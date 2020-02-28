@@ -16,7 +16,7 @@ namespace _1erParcial_Aplicada2.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data Source = Database/InscripcionesDb");
+            optionsBuilder.UseSqlite(@"Data Source = Database/SistemaDb");
         }
     }
 }
