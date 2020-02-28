@@ -12,7 +12,7 @@ namespace _1erParcial_Aplicada2.Models
         [Required(ErrorMessage = "El campo AsignaturaId no puede ser negativo ni estar vacío")]
         public int PagoId { get; set; }
         public DateTime Fecha { get; set; }
-        [Required]
+        [Required(ErrorMessage = "La InscripcionId no puede estar vacío")]
         [Range(minimum: 1, maximum: 1000000000, ErrorMessage = "La InscripcionId tiene que existir para ser valido")]
         public int InscripcionId { get; set; }
         [Required]

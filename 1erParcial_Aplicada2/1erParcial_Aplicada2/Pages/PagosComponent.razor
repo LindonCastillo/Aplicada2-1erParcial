@@ -99,6 +99,14 @@
     {
         PagosController controller = new PagosController();
 
+        InscripcionesController con = new InscripcionesController();
+        Inscripciones tempInscripcion = con.Buscar(pagos.InscripcionId);
+        if(tempInscripcion == null)
+        {
+            pagos.InscripcionId = -1;
+            return;
+        }
+
         if (pagos.PagoId > 0)
         {
             if (controller.Guardar(pagos))
