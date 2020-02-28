@@ -43,9 +43,28 @@ namespace _1erParcial_Aplicada2.Controllers
 		public bool Insertar(Pagos pagos)
 		{
 			Contexto db = new Contexto();
+			EstudianteController estudiante = new EstudianteController();
+			InscripcionesController inscripciones = new InscripcionesController();
 			bool paso = false;
 			try
 			{
+				Inscripciones tempIncripcion = inscripciones.Buscar(pagos.InscripcionId);
+				Estudiantes tempEstudiante = estudiante.Buscar(tempIncripcion.EstudianteId);
+				tempIncripcion.Balance -= pagos.Monto;
+				tempEstudiante.Balance -= pagos.Monto;
+				if(tempIncripcion.Balance < 0)
+				{
+					tempIncripcion.Balance = 0;
+				}
+
+				if(tempEstudiante.Balance < 0)
+				{
+					tempEstudiante.Balance = 0;
+				}
+
+				inscripciones.Modificar(tempIncripcion);
+				estudiante.Modificar(tempEstudiante);
+
 				db.Pagos.Add(pagos);
 				paso = db.SaveChanges() > 0;
 			}
@@ -65,9 +84,28 @@ namespace _1erParcial_Aplicada2.Controllers
 		public bool Modificar(Pagos pagos)
 		{
 			Contexto db = new Contexto();
+			EstudianteController estudiante = new EstudianteController();
+			InscripcionesController inscripciones = new InscripcionesController();
 			bool paso = false;
 			try
 			{
+				Inscripciones tempIncripcion = inscripciones.Buscar(pagos.InscripcionId);
+				Estudiantes tempEstudiante = estudiante.Buscar(tempIncripcion.EstudianteId);
+				tempIncripcion.Balance = pagos.Monto;
+				tempEstudiante.Balance = pagos.Monto;
+				if (tempIncripcion.Balance < 0)
+				{
+					tempIncripcion.Balance = 0;
+				}
+
+				if (tempEstudiante.Balance < 0)
+				{
+					tempEstudiante.Balance = 0;
+				}
+
+				inscripciones.Modificar(tempIncripcion);
+				estudiante.Modificar(tempEstudiante);
+
 				db.Entry(pagos).State = EntityState.Modified;
 				paso = db.SaveChanges() > 0;
 			}
@@ -87,12 +125,32 @@ namespace _1erParcial_Aplicada2.Controllers
 		public bool Eliminar(int id)
 		{
 			Contexto db = new Contexto();
+			EstudianteController estudiante = new EstudianteController();
+			InscripcionesController inscripciones = new InscripcionesController();
 			bool paso = false;
 			try
 			{
 				Pagos pagos = db.Pagos.Find(id);
 				if (pagos != null)
 				{
+					Inscripciones tempIncripcion = inscripciones.Buscar(pagos.InscripcionId);
+					Estudiantes tempEstudiante = estudiante.Buscar(tempIncripcion.EstudianteId);
+					tempIncripcion.Balance += pagos.Monto;
+					tempEstudiante.Balance += pagos.Monto;
+					if (tempIncripcion.Balance < 0)
+					{
+						tempIncripcion.Balance = 0;
+					}
+
+					if (tempEstudiante.Balance < 0)
+					{
+						tempEstudiante.Balance = 0;
+					}
+
+					inscripciones.Modificar(tempIncripcion);
+					estudiante.Modificar(tempEstudiante);
+
+
 					db.Entry(pagos).State = EntityState.Deleted;
 					paso = db.SaveChanges() > 0;
 				}
