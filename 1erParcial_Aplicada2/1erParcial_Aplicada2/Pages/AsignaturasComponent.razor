@@ -35,7 +35,6 @@
             <DataAnnotationsValidator />
             <h3>Asignaturas Component</h3>
 
-            <h5 class="text-muted form-text">@Mensaje</h5>
             <div class="form-group">
                 <label for="asignaturaid_number">AsignaturaId</label>
                 <InputNumber id="asignaturaid_number" class="form-control" @bind-Value="asignaturas.AsignaturaId"></InputNumber>
@@ -63,6 +62,7 @@
                 <ValidationMessage For="(() => asignaturas.Creditos)" />
             </div>
 
+            <h5 class="text-muted form-text">@Mensaje</h5>
             <div>
                 <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
                 <button type="submit" class="btn btn-success">Guardar</button>

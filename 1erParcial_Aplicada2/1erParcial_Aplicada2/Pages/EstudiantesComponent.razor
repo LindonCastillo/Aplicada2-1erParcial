@@ -35,7 +35,6 @@
             <DataAnnotationsValidator />
             <h3>Estudiantes Component</h3>
 
-            <h5 class="text-muted form-text">@Mensaje</h5>
             <div class="form-group">
                 <label for="estudianteid_number">EstudianteId</label>
                 <InputNumber id="estudianteid_number" class="form-control" @bind-Value="estudiantes.EstudianteId"></InputNumber>
@@ -58,6 +57,7 @@
                 <ValidationMessage For="(() => estudiantes.Balance)" />
             </div>
 
+            <h5 class="text-muted form-text">@Mensaje</h5>
             <div>
                 <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
                 <button type="submit" class="btn btn-success">Guardar</button>

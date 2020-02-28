@@ -43,9 +43,14 @@ namespace _1erParcial_Aplicada2.Controllers
 		public bool Insertar(Inscripciones inscripciones)
 		{
 			Contexto db = new Contexto();
+			EstudianteController controller = new EstudianteController();
 			bool paso = false;
 			try
 			{
+				Estudiantes tempEstudiante = controller.Buscar(inscripciones.EstudianteId);
+				tempEstudiante.Balance += inscripciones.Balance;
+				controller.Modificar(tempEstudiante);
+
 				db.Inscripciones.Add(inscripciones);
 				paso = db.SaveChanges() > 0;
 			}
@@ -65,9 +70,14 @@ namespace _1erParcial_Aplicada2.Controllers
 		public bool Modificar(Inscripciones inscripciones)
 		{
 			Contexto db = new Contexto();
+			EstudianteController controller = new EstudianteController();
 			bool paso = false;
 			try
 			{
+				Estudiantes tempEstudiante = controller.Buscar(inscripciones.EstudianteId);
+				tempEstudiante.Balance = inscripciones.Balance;
+				controller.Modificar(tempEstudiante);
+
 				db.Entry(inscripciones).State = EntityState.Modified;
 				paso = db.SaveChanges() > 0;
 			}
@@ -87,12 +97,17 @@ namespace _1erParcial_Aplicada2.Controllers
 		public bool Eliminar(int id)
 		{
 			Contexto db = new Contexto();
+			EstudianteController controller = new EstudianteController();
 			bool paso = false;
 			try
 			{
 				Inscripciones inscripciones = db.Inscripciones.Find(id);
 				if (inscripciones != null)
 				{
+					Estudiantes tempEstudiante = controller.Buscar(inscripciones.EstudianteId);
+					tempEstudiante.Balance -= inscripciones.Balance;
+					controller.Modificar(tempEstudiante);
+
 					db.Entry(inscripciones).State = EntityState.Deleted;
 					paso = db.SaveChanges() > 0;
 				}
