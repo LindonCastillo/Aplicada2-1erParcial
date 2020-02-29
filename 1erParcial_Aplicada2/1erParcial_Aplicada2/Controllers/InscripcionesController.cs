@@ -74,6 +74,25 @@ namespace _1erParcial_Aplicada2.Controllers
 			bool paso = false;
 			try
 			{
+				var anterior = Buscar(inscripciones.InscripcionId);
+
+				foreach (var asignatura in inscripciones.Detalle)
+				{
+					if (asignatura.Id == 0)
+					{
+						db.Entry(asignatura).State = EntityState.Added;
+					}
+
+				}
+
+				foreach (var asignatura in anterior.Detalle)
+				{
+					if (!inscripciones.Detalle.Any(A => A.AsignaturaId == asignatura.AsignaturaId))
+					{
+						db.Entry(asignatura).State = EntityState.Deleted;
+					}
+				}
+
 				Estudiantes tempEstudiante = controller.Buscar(inscripciones.EstudianteId);
 				Inscripciones inscripcion = Buscar(inscripciones.InscripcionId);
 
@@ -140,7 +159,9 @@ namespace _1erParcial_Aplicada2.Controllers
 			Inscripciones inscripciones;
 			try
 			{
-				inscripciones = db.Inscripciones.Find(id);
+
+				inscripciones = db.Inscripciones.Where(i => i.InscripcionId == id).Include(a => a.Detalle).FirstOrDefault();
+
 			}
 			catch (Exception)
 			{

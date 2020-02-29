@@ -12,7 +12,7 @@
 
 
     .form-register {
-        width: 650px;
+        width: 800px;
         background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
         padding: 30px;
         margin: auto;
@@ -57,19 +57,22 @@
                 <ValidationMessage For="(() => inscripciones.EstudianteId)" />
             </div>
 
-            @*<div class="row">
-            <div class="col">
-                <label for="materia">Materia</label>
-                <select class="form-control">
-                    <option value="">Prueba</option>
-                </select>
-                <button type="button" class="btn btn-outline-info" @onclick="AgregarAsignatura">Agregar</button>
+            <div class="row">
+                <div class="col">
+                    <label for="materia">Materia</label>
+                    <InputSelect @bind-Value ="@Seleccionado" @onchange="CargarAsignatura" @onclick="CargarAsignatura" class="form-control">
+                        @foreach (var item in MiLista)
+                        {
+                            <option value="@item.AsignaturaId">@item.Descripcion</option>
+                        }
+                    </InputSelect>
+                    <button type="button" class="btn btn-outline-info" @onclick="AgregarAsignatura">Agregar</button>
+                </div>
+                <div class="col">
+                    <label for="creditos">Creditos</label>
+                    <InputNumber id="creditos" class="form-control" @bind-Value="Asignatura.Creditos" ReadOnly="true"></InputNumber>
+                </div>
             </div>
-            <div class="col">
-                <label for="creditos">Creditos</label>
-                <InputNumber id="creditos" class="form-control" @bind-Value="inscripciones.EstudianteId" ReadOnly="true"></InputNumber>
-            </div>
-        </div>*@
 
             <br />
 
@@ -82,10 +85,23 @@
                             <th>AsignaturaId</th>
                             <th>Nombre</th>
                             <th>Creditos</th>
+                            <th>SubTotal</th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-white">
+                        @foreach (var item in inscripciones.Detalle)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <th>@item.InscripcionId</th>
+                                <td>@item.AsignaturaId</td>
+                                <td>@item.Nombre</td>
+                                <td>@item.Creditos</td>
+                                <td>@item.SubTotal</td>
+                                <td><button type="button" class="btn btn-outline-danger" @onclick="(()=> EliminarAsigantura(item))">Eliminar</button></td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -112,7 +128,7 @@
             </div>
             <div class="form-group">
                 <label for="balance_number">Balance</label>
-                <InputNumber id="balance_number" class="form-control" @bind-Value="inscripciones.Balance"></InputNumber>
+                <InputNumber id="balance_number" class="form-control" @bind-Value="inscripciones.Balance" ReadOnly="true"></InputNumber>
                 <ValidationMessage For="(() => inscripciones.Balance)" />
             </div>
 
@@ -133,7 +149,11 @@
     [Parameter]
     public int Id { get; set; }
     public string Mensaje { get; set; }
+    public string Seleccionado { get; set; }
 
+
+    public Asignaturas Asignatura { get; set; }
+    List<Asignaturas> MiLista = new List<Asignaturas>();
     protected override async Task OnInitializedAsync()
     {
         InscripcionesController controller = new InscripcionesController();
@@ -143,19 +163,49 @@
         {
             inscripciones = controller.Buscar(Id);
         }
+        AsignaturasController controller2 = new AsignaturasController();
+        MiLista = controller2.GetList(A => true);
+
+        Asignatura = new Asignaturas();
+    }
+
+    private void EliminarAsigantura(InscripcionesDetalle asignatura)
+    {
+        inscripciones.Detalle.Remove(asignatura);
+    }
+
+    private void CargarAsignatura()
+    {
+        try
+        {
+            AsignaturasController controller = new AsignaturasController();
+            Asignatura = controller.Buscar(Int32.Parse(Seleccionado));
+        }
+        catch (Exception)
+        {
+
+            //wefrbrvr
+        }
     }
 
     private void AgregarAsignatura()
     {
-        //Inscripciones i = new Inscripciones();
+        if (inscripciones.Detalle.Any(A => A.AsignaturaId == Asignatura.AsignaturaId))
+        {
+            Mensaje = "Esta asignatura ya esta agregada";
+        }
+        else
+        {
+            inscripciones.Detalle.Add(new InscripcionesDetalle()
+            {
+                InscripcionId = inscripciones.InscripcionId,
+                AsignaturaId = Asignatura.AsignaturaId,
+                Nombre = Asignatura.Descripcion,
+                Creditos = Asignatura.Creditos,
+                SubTotal = Asignatura.Creditos * inscripciones.Monto
+            });
+        }
 
-        //i.Detalle.Add(new InscripcionesDetalle(
-        //    Id: 0,
-
-
-
-        //    )
-        //);
     }
 
     Inscripciones inscripciones = new Inscripciones();
@@ -174,7 +224,7 @@
     private void Guardar()
     {
         InscripcionesController controller = new InscripcionesController();
-        
+
         EstudianteController con = new EstudianteController();
         Estudiantes tempEstudiante = con.Buscar(inscripciones.EstudianteId);
         if(tempEstudiante == null)
